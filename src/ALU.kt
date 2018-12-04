@@ -18,7 +18,7 @@ class ALU : (Short, Short, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean)
         val ngx = mux(zrx, not(zrx), nx)
         val zry = mux(y, 0, zy)
         val ngy = mux(zry, not(zry), ny)
-        val fxy = mux(add(ngx, ngy), and(ngx, ngy), f)
+        val fxy = mux(and(ngx, ngy), add(ngx, ngy), f)
         val result = mux(fxy, not(fxy), no)
 
         zr = zero(result)

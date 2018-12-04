@@ -1,7 +1,8 @@
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-class LogicGatesKtTest {
+class Tests {
+
     @Test
     fun nand() {
         assertFalse(nand(true, true))
@@ -57,6 +58,20 @@ class LogicGatesKtTest {
     }
 
     @Test
+    fun add16() {
+        assertEquals(5.toShort(), add(2, 3))
+        assertEquals(0.toShort(), add(-3, 3))
+        assertEquals(4.toShort(), add(0, 4))
+        assertEquals((-7).toShort(), add(5, -12))
+    }
+
+    @Test
+    fun mux() {
+        assertEquals(4, mux(1, 4, true))
+        assertEquals(1, mux(1, 4, false))
+    }
+
+    @Test
     fun shortToBinary() {
         assertArrayEquals(BooleanArray(16) { it == 15 }, (1).toShort().toBinary())
         assertArrayEquals(BooleanArray(16) { false }, (0).toShort().toBinary())
@@ -78,93 +93,44 @@ class LogicGatesKtTest {
     }
 
     @Test
-    fun add16() {
-        /*//1
-        val x = BitSet(16)
-        x[15] = true
-
-        //1
-        val y = BitSet(16)
-        y[15] = true
-
-        //2
-        val expected = BitSet(16)
-        expected[15] = false
-        expected[14] = true
-
-        val actual = add(x, y)
-        print(actual)
-        print(expected)
-
-        assertTrue(actual == expected)*/
-    }
-
-/*    @Test
-    fun `add16 s`() {
-        //3
-        val x = BitSet(16)
-        x[15] = true
-        x[14] = true
-
-        //1
-        val y = BitSet(16)
-        y[15] = true
-
-        //4
-        val expected = BitSet(16)
-        expected[13] = true
-
-        val actual = add(x, y)
-        print(actual)
-        print(expected)
-
-        assertTrue(actual == expected)
-    }
-
-    @Test
     fun increment() {
-        //3
-        val x = BitSet(16)
-        x[15] = true
-        x[14] = true
-
-        //4
-        val expected = BitSet(16)
-        expected[13] = true
-
-        val actual = increment(x)
-        assertTrue(actual == expected)
+        assertEquals(0.toShort(), increment(-1))
+        assertEquals(1.toShort(), increment(0))
+        assertEquals(2.toShort(), increment(1))
     }
 
     @Test
-    fun substractx() {
-        //3
-        val x = BitSet(16)
-        x[15] = true
-        x[14] = true
+    fun substract() {
+        assertEquals(0.toShort(), substract(1, 1))
+        assertEquals((-1).toShort(), substract(0, 1))
+        assertEquals((-1).toShort(), substract(10, 11))
+        assertEquals((0).toShort(), substract(-1, -1))
+        assertEquals((3).toShort(), substract(6, 3))
+    }
 
-        //2
-        val y = BitSet(16)
-        y[14] = true
+    @Test
+    fun `program counter not load`() {
+        val pc = PC(Register(0))
+        assertEquals(0, pc(5, false, false, false))
+    }
 
-        //1
-        val expected = BitSet(16)
-        expected[15] = true
+    @Test
+    fun `program counter load`() {
+        val pc = PC(Register(0))
+        assertEquals(5, pc(5, true, false, false))
+    }
 
-        val actual = substract(x, y)
-        assertTrue(actual == expected)
-    }*/
+    @Test
+    fun `program counter increment`() {
+        val pc = PC(Register(0))
+        assertEquals(1, pc(5, false, true, false))
+    }
 
-    /* @Test
-     fun latch() {
-         val clock1 = latch(true, true)
-         print(clock1)
-         val clock2 = latch(false, false, clock1)
-         print(clock2)
-         val clock3 = latch(false, true, clock1)
-         print(clock3)
-         val clock4 = latch(true, false, clock1)
-         print(clock4)
-     }*/
+    @Test
+    fun `program counter reset`() {
+        val pc = PC(Register(5))
+        assertEquals(0, pc(7, false, false, true))
+    }
+
 
 }

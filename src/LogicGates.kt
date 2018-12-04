@@ -102,8 +102,9 @@ fun increment(x: Short): Short {
 }
 
 fun substract(x: Short, y: Short): Short {
-    val not = not(y)
-    return 0
+    return increment(add(x, not(y)))
+    //val not = not(y)
+    //return 0
     //return increment(add(x, not))
 }
 

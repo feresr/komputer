@@ -1,6 +1,6 @@
-class RAM512 : (Short, Boolean, Short) -> Short {
+class RAM32K : (Short, Boolean, Short) -> Short {
 
-    private val registers = arrayOf(RAM64(), RAM64(), RAM64(), RAM64(), RAM64(), RAM64(), RAM64(), RAM64())
+    private val registers = arrayOf(RAM16K(), RAM16K())
 
     override fun invoke(input: Short, load: Boolean, address: Short): Short {
         return registers[address % registers.size](input, load, address)

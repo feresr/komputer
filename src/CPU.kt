@@ -3,6 +3,11 @@ class CPU(private val pc: PC,
           private val registerA: Register,
           private val registerD: Register) : (Short, Short, Boolean) -> Unit {
 
+    var currentPc : Short = 0
+    var currentAddressM : Short = 0
+    var outM : Short = 0
+    var writeM = false
+
     override fun invoke(inst: Short, inM: Short, reset: Boolean) {
         val instruction = inst.toBinary()
         val Ainstruction = not(instruction[15])
@@ -19,11 +24,11 @@ class CPU(private val pc: PC,
         val dRegisterOut = registerD(alu.output, loadD)
 
         //outputs
-        val outM = alu(dRegisterOut, aMout, zx = instruction[11], nx = instruction[10],
+        outM = alu(dRegisterOut, aMout, zx = instruction[11], nx = instruction[10],
                 zy = instruction[9], ny = instruction[8], f = instruction[7],
                 no = instruction[6])
 
-        val writeM = and(Cinstruction, instruction[3])
+        writeM = and(Cinstruction, instruction[3])
 
         val jeq = and(alu.zr, instruction[1])
         val jlt = and(alu.ng, instruction[2])
@@ -35,8 +40,8 @@ class CPU(private val pc: PC,
         val pcLoad = and(Cinstruction, jumpToA)
         val pcInc = not(pcLoad)
 
-        val PC = pc(aRegisterOut, pcInc, pcLoad, reset)
-        val addressM = aRegisterOut
+        currentPc = pc(aRegisterOut, pcInc, pcLoad, reset)
+        currentAddressM = aRegisterOut
 
     }
 }

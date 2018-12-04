@@ -5,4 +5,8 @@ class RAM4K : (Short, Boolean, Short) -> Short {
     override fun invoke(input: Short, load: Boolean, address: Short): Short {
         return registers[address % registers.size](input, load, address)
     }
+
+    override fun toString(): String {
+        return registers.map { it.toString() }.reduce { acc, s -> acc + s }
+    }
 }

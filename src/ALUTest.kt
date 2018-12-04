@@ -1,130 +1,48 @@
-import java.util.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 
 class ALUTest {
-
- /*   val alu = ALU()
+    val alu = ALU()
 
     @Test
     fun `zero`() {
-        alu.zx = true
-        alu.nx = false
-        alu.zy = true
-        alu.ny = false
-        alu.f = true
-        alu.no = false
-
-        val x = BitSet(NBIT)
-        x[0] = true
-
-        val result = alu.compute(x, BitSet(NBIT))
-        assertTrue(result.cardinality() == 0)
+        val result = alu(1, 2, true, false, true, false, true, false)
+        assertEquals(0.toShort(), result)
     }
 
     @Test
     fun `one`() {
-        alu.zx = true
-        alu.nx = true
-        alu.zy = true
-        alu.ny = true
-        alu.f = true
-        alu.no = true
-
-        val x = BitSet(NBIT)
-        x[0] = true
-
-        val result = alu.compute(x, BitSet(NBIT))
-        assertTrue(result.cardinality() == 1)
+        val result = alu(1, 2, true, true, true, true, true, true)
+        assertEquals(1.toShort(), result)
     }
 
     @Test
     fun `negative one`() {
-        alu.zx = true
-        alu.nx = true
-        alu.zy = true
-        alu.ny = false
-        alu.f = true
-        alu.no = false
-
-        val x = BitSet(NBIT)
-        x[0] = true
-
-        val result = alu.compute(x, BitSet(NBIT))
-        assertTrue(result.cardinality() == 16) //-1 in two's complement
+        val result = alu(1, 2, true, true, true, false, true, false)
+        assertEquals((-1).toShort(), result)
     }
 
     @Test
     fun `first input`() {
-        alu.zx = false
-        alu.nx = false
-        alu.zy = true
-        alu.ny = true
-        alu.f = false
-        alu.no = false
-
-        val x = BitSet(NBIT)
-        x[0] = true
-
-        val result = alu.compute(x, BitSet(NBIT))
-        assertTrue(result == x) //-1 in two's complement
+        val result = alu(8, 2, false, false, true, true, false, false)
+        assertEquals(8.toShort(), result)
     }
 
     @Test
     fun `second input`() {
-        alu.zx = true
-        alu.nx = true
-        alu.zy = false
-        alu.ny = false
-        alu.f = false
-        alu.no = false
-
-        val x = BitSet(NBIT)
-        x[0] = true
-
-        val y = BitSet(NBIT)
-        x[2] = true
-        x[5] = true
-
-        val result = alu.compute(x, y)
-        assertTrue(result == y)
+        val result = alu(8, 2, true, true, false, false, false, false)
+        assertEquals(2.toShort(), result)
     }
 
     @Test
     fun `addition x + y`() {
-        alu.zx = false
-        alu.nx = false
-        alu.zy = false
-        alu.ny = false
-        alu.f = true
-        alu.no = false
-
-        val x = BitSet(NBIT)
-        x[0] = true
-
-        val y = BitSet(NBIT)
-        x[2] = true
-        x[5] = true
-
-        val result = alu.compute(x, y)
-        assertTrue(result == add(x,y))
+        val result = alu(8, 2, false, false, false, false, true, false)
+        assertEquals((2 + 8).toShort(), result)
     }
 
     @Test
     fun `and x && y`() {
-        alu.zx = false
-        alu.nx = false
-        alu.zy = false
-        alu.ny = false
-        alu.f = false
-        alu.no = false
-
-        val x = BitSet(NBIT)
-        x[0] = true
-
-        val y = BitSet(NBIT)
-        x[2] = true
-        x[5] = true
-
-        val result = alu.compute(x, y)
-        assertTrue(result == and16(x,y))
-    }*/
+        val result = alu(8, 2, false, false, false, false, false, false)
+        assertEquals(and(8, 2), result)
+    }
 }
