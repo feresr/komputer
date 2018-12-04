@@ -1,23 +1,20 @@
-import java.util.*
-
-
 class CPU(private val pc: PC,
           private val alu: ALU,
           private val registerA: Register,
-          private val registerD: Register) : (BitSet, BitSet, Boolean) -> Unit {
+          private val registerD: Register) : (Short, Short, Boolean) -> Unit {
 
-    override fun invoke(instruction: BitSet, inM: BitSet, reset: Boolean) {
-
+    override fun invoke(inst: Short, inM: Short, reset: Boolean) {
+        val instruction = inst.toBinary()
         val Ainstruction = not(instruction[15])
         val Cinstruction = instruction[15]
 
-        val aRegisterIn = mux16(instruction, alu.output, Ainstruction)
+        val aRegisterIn = mux(inst, alu.output, Ainstruction)
 
         val aluToA = and(Cinstruction, instruction[5])
         val loadA = or(Ainstruction, aluToA)
         val aRegisterOut = registerA(aRegisterIn, loadA)
 
-        val aMout = mux16(aRegisterOut, inM, instruction[12])
+        val aMout = mux(aRegisterOut, inM, instruction[12])
         val loadD = and(Cinstruction, instruction[4])
         val dRegisterOut = registerD(alu.output, loadD)
 
@@ -25,8 +22,6 @@ class CPU(private val pc: PC,
         val outM = alu(dRegisterOut, aMout, zx = instruction[11], nx = instruction[10],
                 zy = instruction[9], ny = instruction[8], f = instruction[7],
                 no = instruction[6])
-
-
 
         val writeM = and(Cinstruction, instruction[3])
 
@@ -39,7 +34,6 @@ class CPU(private val pc: PC,
         val jumpToA = or(jle, jgt)
         val pcLoad = and(Cinstruction, jumpToA)
         val pcInc = not(pcLoad)
-
 
         val PC = pc(aRegisterOut, pcInc, pcLoad, reset)
         val addressM = aRegisterOut

@@ -1,11 +1,8 @@
-import java.util.*
+class Register : (Short, Boolean) -> Short {
 
-class Register : (BitSet, Boolean) -> BitSet {
+    private var state: Short = 0
 
-    private var state: BitSet = BitSet(16)
-
-    override fun invoke(input: BitSet, load: Boolean): BitSet {
-        and16()
+    override fun invoke(input: Short, load: Boolean): Short {
         if (load) state = input
         return state
     }

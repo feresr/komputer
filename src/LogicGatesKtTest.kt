@@ -1,7 +1,5 @@
-import org.testng.annotations.Test
-import java.util.*
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 
 class LogicGatesKtTest {
     @Test
@@ -59,8 +57,29 @@ class LogicGatesKtTest {
     }
 
     @Test
+    fun shortToBinary() {
+        assertArrayEquals(BooleanArray(16) { it == 15 }, (1).toShort().toBinary())
+        assertArrayEquals(BooleanArray(16) { false }, (0).toShort().toBinary())
+        assertArrayEquals(BooleanArray(16) { true }, (-1).toShort().toBinary())
+    }
+
+    @Test
+    fun binaryToShort() {
+        assertEquals(1.toShort(), BooleanArray(16) { it == 15 }.toShort())
+        assertEquals(0.toShort(), BooleanArray(16) { false }.toShort())
+        assertEquals((-1).toShort(), BooleanArray(16) { true }.toShort())
+    }
+
+    @Test
+    fun shortToBinaryToShort() {
+        listOf(105, 99, 21, 12, 1, 0, -1, -12, -21, -99, -105)
+                .map { it.toShort() }
+                .forEach { assertEquals(it, it.toBinary().toShort()) }
+    }
+
+    @Test
     fun add16() {
-        //1
+        /*//1
         val x = BitSet(16)
         x[15] = true
 
@@ -77,10 +96,10 @@ class LogicGatesKtTest {
         print(actual)
         print(expected)
 
-        assertTrue(actual == expected)
+        assertTrue(actual == expected)*/
     }
 
-    @Test
+/*    @Test
     fun `add16 s`() {
         //3
         val x = BitSet(16)
@@ -134,18 +153,18 @@ class LogicGatesKtTest {
 
         val actual = substract(x, y)
         assertTrue(actual == expected)
-    }
-
-   /* @Test
-    fun latch() {
-        val clock1 = latch(true, true)
-        print(clock1)
-        val clock2 = latch(false, false, clock1)
-        print(clock2)
-        val clock3 = latch(false, true, clock1)
-        print(clock3)
-        val clock4 = latch(true, false, clock1)
-        print(clock4)
     }*/
+
+    /* @Test
+     fun latch() {
+         val clock1 = latch(true, true)
+         print(clock1)
+         val clock2 = latch(false, false, clock1)
+         print(clock2)
+         val clock3 = latch(false, true, clock1)
+         print(clock3)
+         val clock4 = latch(true, false, clock1)
+         print(clock4)
+     }*/
 
 }

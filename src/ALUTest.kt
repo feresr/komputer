@@ -1,10 +1,8 @@
-import org.testng.annotations.Test
 import java.util.*
-import kotlin.test.assertTrue
 
 class ALUTest {
 
-    val alu = ALU()
+ /*   val alu = ALU()
 
     @Test
     fun `zero`() {
@@ -128,5 +126,5 @@ class ALUTest {
 
         val result = alu.compute(x, y)
         assertTrue(result == and16(x,y))
-    }
+    }*/
 }
