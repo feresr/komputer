@@ -1,4 +1,3 @@
-import java.util.*
 import kotlin.experimental.and
 import kotlin.experimental.inv
 import kotlin.math.abs
@@ -27,12 +26,12 @@ fun BooleanArray.toShort(): Short {
 
 
 fun Short.toBinary(): BooleanArray {
-    var current = if (this >= 0 ) this else (this + 1).toShort()
+    var current = if (this >= 0) this else (this + 1).toShort()
     val positive = BooleanArray(Short.SIZE_BITS) {
         (abs(current % 2) == 1).also { current = current.div(2).toShort() }
     }.reversedArray()
 
-    return if (this >= 0 ) {
+    return if (this >= 0) {
         positive
     } else {
         positive.map { !it }.toBooleanArray()
