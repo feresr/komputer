@@ -4,6 +4,7 @@ class ALU : (Short, Short, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean)
     //output
     var zr: Boolean = false
     var ng: Boolean = false
+    var output: Short = 0
 
     override fun invoke(x: Short,
                         y: Short,
@@ -28,5 +29,4 @@ class ALU : (Short, Short, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean)
         return result
     }
 
-    var output: Short = 0
 }

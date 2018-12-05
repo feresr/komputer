@@ -1,4 +1,4 @@
-class Register(var state : Short = 0) : (Short, Boolean) -> Short {
+class Register(private var state : Short = 0) : (Short, Boolean) -> Short {
 
     override fun invoke(input: Short, load: Boolean): Short {
         if (load) state = input

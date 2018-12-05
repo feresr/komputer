@@ -132,5 +132,15 @@ class Tests {
         assertEquals(0, pc(7, false, false, true))
     }
 
+    @Test
+    fun register() {
+        val register = Register(1)
+        assertEquals(1, register(2, false))
+        assertEquals(4, register(4, true))
+        assertEquals(9, register(9, true))
+        assertEquals(1, register(1, true))
+        assertEquals(1, register(2, false))
+        assertEquals(1, register(7, false))
+    }
 
 }

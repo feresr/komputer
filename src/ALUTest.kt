@@ -8,30 +8,40 @@ class ALUTest {
     fun `zero`() {
         val result = alu(1, 2, true, false, true, false, true, false)
         assertEquals(0.toShort(), result)
+        assertEquals(true, alu.zr)
+        assertEquals(false, alu.ng)
     }
 
     @Test
     fun `one`() {
         val result = alu(1, 2, true, true, true, true, true, true)
         assertEquals(1.toShort(), result)
+        assertEquals(false, alu.zr)
+        assertEquals(false, alu.ng)
     }
 
     @Test
     fun `negative one`() {
         val result = alu(1, 2, true, true, true, false, true, false)
         assertEquals((-1).toShort(), result)
+        assertEquals(false, alu.zr)
+        assertEquals(true, alu.ng)
     }
 
     @Test
     fun `first input`() {
         val result = alu(8, 2, false, false, true, true, false, false)
         assertEquals(8.toShort(), result)
+        assertEquals(false, alu.zr)
+        assertEquals(false, alu.ng)
     }
 
     @Test
     fun `second input`() {
         val result = alu(8, 2, true, true, false, false, false, false)
         assertEquals(2.toShort(), result)
+        assertEquals(false, alu.zr)
+        assertEquals(false, alu.ng)
     }
 
     @Test
