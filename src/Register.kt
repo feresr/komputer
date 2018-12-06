@@ -1,15 +1,17 @@
-class Register(private var state : Short = 0) : (Short, Boolean) -> Short, RAM {
+class Register(private var state: Short = 0) : RAM() {
 
     override fun invoke(input: Short, load: Boolean, address: Short): Short {
         return invoke(input, load)
     }
 
-    override fun invoke(input: Short, load: Boolean): Short {
+    operator fun invoke(input: Short, load: Boolean): Short {
         if (load) state = input
         return state
     }
 
-    override fun toString(): String {
-        return " $state "
+    override fun toString(): String = " $state "
+
+    companion object {
+        const val NUM_REGISTERS = 1
     }
 }

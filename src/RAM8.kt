@@ -1,5 +1,5 @@
-class RAM8 : RAM {
-    private val registers = arrayOf(Register(1), Register(1), Register(), Register(), Register(), Register(0), Register(0), Register(5))
+class RAM8 : RAM() {
+    private val registers = arrayOf(Register(), Register(), Register(), Register(), Register(), Register(), Register(), Register())
 
     override fun invoke(input: Short, load: Boolean, address: Short): Short {
         return registers[address.toInt()].invoke(input, load)

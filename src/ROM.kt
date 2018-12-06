@@ -1,0 +1,1 @@
+interface ROM : (Short) -> Short

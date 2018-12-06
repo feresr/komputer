@@ -1,10 +1,11 @@
-class Computer(rom: ROM32K, cpu: CPU, memory: RAM, reset: () -> Boolean, clock : () -> Unit) {
+class Computer(rom: ROM32K, cpu: CPU, memory: RAM, reset: () -> Boolean, clock : () -> Unit, computerOn : () -> Boolean) {
 
     init {
+
         println("Starting pc... initial memory: $memory")
         println("")
 
-        while (true) {
+        while (computerOn()) {
             println("pc: ${cpu.currentPc} - memory: $memory")
             println("CPU: $cpu")
             println("")
@@ -15,7 +16,8 @@ class Computer(rom: ROM32K, cpu: CPU, memory: RAM, reset: () -> Boolean, clock :
             )
 
             clock()
-            Thread.sleep(200)
+
+            //Thread.sleep(200)
         }
     }
 }

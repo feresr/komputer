@@ -1,4 +1,4 @@
-class RAM8K : RAM {
+class RAM8K : RAM() {
 
     private val registers = arrayOf(RAM4K(), RAM4K())
 

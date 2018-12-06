@@ -1,35 +1,66 @@
 import java.awt.*
-import java.awt.image.BufferedImage
+import java.awt.event.WindowEvent
+import java.awt.event.WindowListener
+import java.util.concurrent.TimeUnit
 
+class Screen(private val memory: ROM, fps: Int = 60, val onWindowClosed : ()-> Unit) : Frame("Monitor") {
 
-class Screen(private val memory: RAM8K) : Frame("Monitor") {
+    private var px = 0
+    private var py = 0
 
-    // i = 32 * row + col / 16
-    // col % 16
-    private val image = BufferedImage(512, 256, BufferedImage.TYPE_BYTE_BINARY)
+    private var time = System.currentTimeMillis()
+    private val step = TimeUnit.SECONDS.toMillis(1) / fps
 
     init {
-        //isUndecorated = true
+        isResizable = false
         isVisible = true
-        isResizable = true
-        setSize(512 + insets.left + insets.right, 256 + insets.top + insets.bottom)
+        addWindowListener(object : WindowListener {
+            override fun windowDeiconified(e: WindowEvent?) {}
+            override fun windowClosed(e: WindowEvent?) {}
+            override fun windowActivated(e: WindowEvent?) {}
+            override fun windowDeactivated(e: WindowEvent?) {}
+            override fun windowOpened(e: WindowEvent?) {}
+            override fun windowIconified(e: WindowEvent?) {}
+            override fun windowClosing(e: WindowEvent?) {
+                onWindowClosed()
+                graphics?.dispose()
+                dispose()
+            }
+        })
+        setSize(WIDTH * SCALE + insets.left + insets.right, HEIGHT * SCALE + insets.top + insets.bottom)
+        background = Color.BLACK
     }
 
-    override fun paint(g: Graphics) {
-        var x = 0
-        var y = 0
-        (0 until 512*256/16).forEach { i ->
-            memory(0, false, i.toShort()).toBinary().forEach {
-                image.setRGB(x, y, if (it) Color.WHITE.rgb else Color.black.rgb)
-                x++
-                if (x % 512 == 0) {
-                    x = 0
-                    y++
-                }
-            }
+    fun refresh() {
+        if ((System.currentTimeMillis() - time) < step) return
+
+        px = 0
+        py = 0
+        val gg = graphics as Graphics2D
+
+        (0 until PIXELS).forEach { i ->
+            memory(i.toShort())
+                    .toBinary()
+                    .map { Math.random() > .5 }
+                    .forEach { bit ->
+                        gg.paint = if (bit) Color.WHITE else Color.BLACK
+                        gg.fillRect(px * SCALE + insets.left, py * SCALE + insets.top, SCALE, SCALE)
+                        px++
+                        if (px % WIDTH == 0) {
+                            px = 0
+                            py++
+                        }
+                    }
 
         }
+        gg.dispose()
+        time = System.currentTimeMillis()
+    }
 
-        g.drawImage(image, insets.left, insets.top, null)
+    companion object {
+        const val HEIGHT = 256
+        const val WIDTH = 512
+        const val PIXELS = WIDTH * HEIGHT / Short.SIZE_BITS
+        const val SCALE: Int = 3
     }
 }

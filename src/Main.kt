@@ -1,6 +1,7 @@
 
 fun main(args: Array<String>) {
 
+    var computerOn = true
     val program = ShortArray(10)
 
     //Add ram[0] to ram[1] and store it to ram[2]
@@ -20,12 +21,13 @@ fun main(args: Array<String>) {
     program[6] = 2      // 0000000000000010     @2      (redundant) Sets A to 2, makes M point to RAM[2]
     program[7] = -4089  // 1111000000000111     JMP     Unconditional jump
 
-    val videoRam = RAM8K()
-    val screen = Screen(videoRam)
+    val ram = VideoRam()
+    val screen = Screen(ram.videoMemory, onWindowClosed = { computerOn = false })
     Computer(
             rom = ROM32K(program),
-            cpu = CPU(PC(Register()), ALU(), registerA = Register(), registerD = Register()), memory = videoRam,
+            cpu = CPU(PC(Register()), ALU(), registerA = Register(), registerD = Register()), memory = ram,
             reset = { false },
-            clock = { screen.repaint() }
+            clock = { screen.refresh() },
+            computerOn = { computerOn }
     )
 }
