@@ -3,7 +3,7 @@ class RAM64 : RAM {
     private val registers = arrayOf(RAM8(),RAM8(),RAM8(),RAM8(),RAM8(),RAM8(),RAM8(),RAM8())
 
     override fun invoke(input: Short, load: Boolean, address: Short): Short {
-        return registers[address / RAM8.NUM_REGISTERS](input, load, address)
+        return registers[address / RAM8.NUM_REGISTERS](input, load, (address % RAM8.NUM_REGISTERS).toShort())
     }
 
     override fun toString(): String {

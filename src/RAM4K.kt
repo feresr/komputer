@@ -1,9 +1,9 @@
-class RAM4K : (Short, Boolean, Short) -> Short {
+class RAM4K : RAM {
 
     private val registers = arrayOf(RAM512(), RAM512(), RAM512(), RAM512(), RAM512(), RAM512(), RAM512(), RAM512())
 
     override fun invoke(input: Short, load: Boolean, address: Short): Short {
-        return registers[address / RAM512.NUM_CHIPS](input, load, address)
+        return registers[address / RAM512.NUM_CHIPS](input, load, (address % RAM512.NUM_CHIPS).toShort())
     }
 
     override fun toString(): String {

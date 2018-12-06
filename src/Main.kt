@@ -20,5 +20,12 @@ fun main(args: Array<String>) {
     program[6] = 2      // 0000000000000010     @2      (redundant) Sets A to 2, makes M point to RAM[2]
     program[7] = -4089  // 1111000000000111     JMP     Unconditional jump
 
-    Computer(rom = ROM32K(program), cpu = CPU(PC(Register()), ALU(), Register(), Register()), memory = RAM32K(), reset = { false })
+    val videoRam = RAM8K()
+    val screen = Screen(videoRam)
+    Computer(
+            rom = ROM32K(program),
+            cpu = CPU(PC(Register()), ALU(), registerA = Register(), registerD = Register()), memory = videoRam,
+            reset = { false },
+            clock = { screen.repaint() }
+    )
 }

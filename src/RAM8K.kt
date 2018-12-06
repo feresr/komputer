@@ -1,6 +1,6 @@
-class RAM16K : RAM  {
+class RAM8K : RAM {
 
-    private val registers = arrayOf(RAM4K(), RAM4K(), RAM4K(), RAM4K(), RAM4K(), RAM4K(), RAM4K(), RAM4K())
+    private val registers = arrayOf(RAM4K(), RAM4K())
 
     override fun invoke(input: Short, load: Boolean, address: Short): Short {
         return registers[address / RAM4K.NUM_CHIPS](input, load, (address % RAM4K.NUM_CHIPS).toShort())
@@ -11,6 +11,6 @@ class RAM16K : RAM  {
     }
 
     companion object {
-        const val NUM_CHIPS = RAM4K.NUM_CHIPS * 8
+        const val NUM_CHIPS = RAM4K.NUM_CHIPS * 2
     }
 }
