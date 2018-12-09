@@ -1,0 +1,12 @@
+apply plugin: 'application'
+apply from: '../build.gradle'
+
+sourceSets {
+    main.kotlin.srcDirs += 'src/main'
+    main.java.srcDirs += 'src/main'
+    test.kotlin.srcDirs += 'src/test'
+    test.java.srcDirs += 'src/test'
+}
+
+
+mainClassName = "MainKt"

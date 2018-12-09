@@ -8,6 +8,12 @@ class CPU(private val pc: PC,
     var outM : Short = 0
     var writeM = false
 
+    // Registers: D A  M (ram[A])
+    // A-Instruction: @value                    0value
+
+    // C-Instruction: [dest] = comp ; [jmp]     1 u u a c1 c2 c3 c4 c5 c6 d1 d2 d3 j1 j2 j3
+    // u = unused, a c = computation / control bit, d = destination, j = jump
+
     override fun invoke(inst: Short, inM: Short, reset: Boolean) {
         val instruction = inst.toBinary()
         val opCode = instruction[0]

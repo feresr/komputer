@@ -41,7 +41,7 @@ class Screen(private val memory: ROM, fps: Int = 60, val onWindowClosed : ()-> U
         (0 until PIXELS).forEach { i ->
             memory(i.toShort())
                     .toBinary()
-                    .map { Math.random() > .5 }
+                    //.map { Math.random() > .5 }
                     .forEach { bit ->
                         gg.paint = if (bit) Color.WHITE else Color.BLACK
                         gg.fillRect(px * SCALE + insets.left, py * SCALE + insets.top, SCALE, SCALE)
