@@ -3,6 +3,32 @@ import java.io.File
 const val A_INSTRUCTION_PREFIX = "@"
 const val COMMENT_START = "//"
 
+private val symbols: MutableMap<String, String> = mutableMapOf(
+        "R0" to "0000000000000000",
+        "R1" to "0000000000000001",
+        "R2" to "0000000000000010",
+        "R3" to "0000000000000011",
+        "R4" to "0000000000000100",
+        "R5" to "0000000000000101",
+        "R6" to "0000000000000110",
+        "R7" to "0000000000000111",
+        "R8" to "0000000000001000",
+        "R9" to "0000000000001001",
+        "R10" to "0000000000001010",
+        "R11" to "0000000000001011",
+        "R12" to "0000000000001100",
+        "R13" to "0000000000001101",
+        "R14" to "0000000000001110",
+        "R15" to "0000000000001111",
+        "SCREEN" to "0100000000000001",
+        "KBD" to "0110000000000000",
+        "SP" to "0000000000000000",
+        "LCL" to "0000000000000001",
+        "ARG" to "0000000000000010",
+        "THIS" to "0000000000000011",
+        "THAT" to "0000000000000100"
+)
+
 fun main(args: Array<String>) {
     if (args.isEmpty()) {
         print("Please specify the filename to assemble")
@@ -11,16 +37,41 @@ fun main(args: Array<String>) {
     val whiteSpaces = Regex("\\s")
     val writer = File(args[0] + ".cmp").writer()
 
+    var lineNumber = 0
+    var varAddress = 16
+
     File(args[0])
             .bufferedReader()
             .lines()
             .map { it.replace(whiteSpaces, "") }
             .map { it -> it.split(COMMENT_START).firstOrNull().takeUnless { it.isNullOrBlank() } }
             .filter { it != null }
+            .forEach {
+                if (it!!.startsWith("(")) {
+                    symbols[it.drop(1).dropLast(1)] = String.format("%1$" + 16 + "s", Integer.toBinaryString(lineNumber)).replace(' ', '0')
+                } else {
+                    lineNumber++
+                }
+            }
+
+    File(args[0])
+            .bufferedReader()
+            .lines()
+            .map { it.replace(whiteSpaces, "") }
+            .map { it -> it.split(COMMENT_START).firstOrNull().takeUnless { it.isNullOrBlank() } }
+            .filter { it != null }
+            .filter { it!!.startsWith("(").not() }
             .map { instruction ->
                 if (instruction!!.startsWith(A_INSTRUCTION_PREFIX)) {
                     //A Instruction
-                    "0" + String.format("%1$" + 15 + "s", Integer.toBinaryString(instruction.removePrefix(A_INSTRUCTION_PREFIX).toInt())).replace(' ', '0')
+                    val value = instruction.removePrefix(A_INSTRUCTION_PREFIX)
+                    value.toIntOrNull()?.let {
+                        String.format("%1$" + 16 + "s", Integer.toBinaryString(it)).replace(' ', '0')
+                    }
+                            ?:  symbols.getOrPut(value) {
+                                String.format("%1$" + 16 + "s", Integer.toBinaryString(varAddress)).replace(' ', '0').also { varAddress++ }
+                            }
+
                 } else {
                     //C Instruction
                     val parsed = instruction
@@ -34,8 +85,13 @@ fun main(args: Array<String>) {
                     "111" + mapComp(comp) + mapDest(dest) + mapJmp(jmp)
                 }
             }
-            .map { it.map { c -> c == '1' }.toBooleanArray().toShort() }
-            .forEach { writer.appendln(it.toString()) }
+            .map {
+                it
+                        .map { c -> c == '1' }
+                        .toBooleanArray()
+                        .toShort()
+            }
+            .forEach { writer.appendln(it.toString()); }
 
     writer.flush()
 }

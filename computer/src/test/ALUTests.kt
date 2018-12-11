@@ -1,7 +1,7 @@
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
-class ALUTest {
+class ALUTests {
     val alu = ALU()
 
     @Test

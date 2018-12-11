@@ -9,6 +9,10 @@ class Register(private var state: Short = 0) : RAM() {
         return state
     }
 
+    operator fun invoke(): Short {
+        return state
+    }
+
     override fun toString(): String = " $state "
 
     companion object {

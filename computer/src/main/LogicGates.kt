@@ -21,7 +21,7 @@ fun BooleanArray.toShort(): Short {
         acc + c * (if (this[cur]) 1 else 0).also { c *= 2 }
     }
 
-    return (if (this[0]) firstBits - 32768 else firstBits).toShort()
+    return (if (this[0]) firstBits - Short.MIN_VALUE else firstBits).toShort()
 }
 
 

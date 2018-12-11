@@ -12,11 +12,14 @@ fun main(args: Array<String>) {
 
     val ram = VideoRam()
     val screen = Screen(ram.videoMemory, onWindowClosed = { computerOn = false })
-    Computer(
+    val computer = Computer(
             rom = Cartridge(program),
             cpu = CPU(PC(Register()), ALU(), registerA = Register(), registerD = Register()), memory = ram,
-            reset = { false },
-            clock = { screen.refresh() },
-            computerOn = { computerOn }
+            reset = { false }
     )
+
+    while (computerOn) {
+        computer.step()
+        screen.refresh()
+    }
 }

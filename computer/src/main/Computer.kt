@@ -1,22 +1,22 @@
-class Computer(rom: ROM, cpu: CPU, memory: RAM, reset: () -> Boolean, clock : () -> Unit, computerOn : () -> Boolean) {
+class Computer(private val rom: ROM,
+               private val cpu: CPU,
+               private val memory: RAM,
+               private val reset: () -> Boolean) {
 
     init {
-
         println("Starting pc... initial memory: $memory")
         println("")
+    }
 
-        while (computerOn()) {
 
-            println("pc: ${cpu.currentPc} - CPU: $cpu")
-            cpu(
-                    inst = rom(cpu.currentPc),
-                    inM = memory(input = cpu.outM, load = cpu.writeM, address = cpu.currentAddressM),
-                    reset = reset()
-            )
-            println("memory: $memory \n")
-
-            clock()
-            //Thread.sleep(1000)
-        }
+    fun step() {
+        println("pc: ${cpu.currentPc} - CPU: $cpu")
+        cpu(
+                inst = rom(cpu.currentPc),
+                inM = memory(cpu.currentAddressM),
+                reset = reset()
+        )
+        memory(input = cpu.outM, load = cpu.writeM, address = cpu.currentAddressM)
+        println("memory: $memory \n")
     }
 }

@@ -2,7 +2,7 @@ import junit.framework.TestCase.*
 import org.junit.Assert.assertArrayEquals
 import org.junit.Test
 
-class Tests {
+class LogicGatesTests {
 
     @Test
     fun nand() {
