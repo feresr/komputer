@@ -17,18 +17,17 @@ class CPU(private val pc: PC,
     override fun invoke(inst: Short, inM: Short, reset: Boolean) {
         val instruction = inst.toBinary()
         val opCode = instruction[0]
-        val aRegisterIn = mux(inst, alu.output, opCode)
 
-        val aluToA = and(opCode, instruction[10]) // the 10 bit of a C instruction tells us if we should save in A
-        val loadA = or(not(opCode), aluToA)
-        val aRegisterOut = registerA(input = aRegisterIn, load = loadA)
+        var aRegisterOut = registerA(input = inst, load = not(opCode))
 
         //outputs
         val aMout = mux(aRegisterOut, inM, and(opCode, instruction[3]))
-        outM = alu(registerD(input = 0, load = false), aMout, zx = instruction[4], nx = instruction[5],
+        outM = alu(registerD(), aMout, zx = instruction[4], nx = instruction[5],
                 zy = instruction[6], ny = instruction[7], f = instruction[8],
                 no = instruction[9])
 
+        val loadA = and(opCode, instruction[10]) // the 10 bit of a C instruction tells us if we should save in A
+        aRegisterOut = registerA(input = mux(inst, outM, opCode), load = loadA)
         val loadD = and(opCode, instruction[11]) // the 11 bit of a C instruction tells us if we should save in D
         registerD(input = outM, load = loadD)
 

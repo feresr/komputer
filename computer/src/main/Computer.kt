@@ -4,19 +4,20 @@ class Computer(private val rom: ROM,
                private val reset: () -> Boolean) {
 
     init {
-        println("Starting pc... initial memory: $memory")
-        println("")
+        //println("Starting pc... initial memory: $memory")
+        //println("")
     }
 
 
     fun step() {
-        println("pc: ${cpu.currentPc} - CPU: $cpu")
+        //println("pc: ${cpu.currentPc}")
         cpu(
                 inst = rom(cpu.currentPc),
                 inM = memory(cpu.currentAddressM),
                 reset = reset()
         )
         memory(input = cpu.outM, load = cpu.writeM, address = cpu.currentAddressM)
-        println("memory: $memory \n")
+        println("CPU: $cpu pc:${cpu.currentPc}") // - memory: $memory \n")
+        //Thread.sleep(600)
     }
 }

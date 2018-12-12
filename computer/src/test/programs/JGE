@@ -1,0 +1,5 @@
+@2
+D=A
+@3
+D=D-1;JGE       //0 EQUAL 0, PC SHOULD STAY IN 0 FOREVER
+@100

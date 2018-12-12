@@ -1,14 +1,12 @@
 import java.io.File
+import kotlin.streams.toList
 
 fun main(args: Array<String>) {
 
     var computerOn = true
-    val program = ShortArray(40000)
-    var i = 0
-    File(args[0])
+    val program = File(args[0])
             .bufferedReader()
-            .lines()
-            .forEach { program[i] = it.toShort(); i++; }
+            .lines().map<Short> { it.toShort() }.toList().toShortArray()
 
     val ram = VideoRam()
     val screen = Screen(ram.videoMemory, onWindowClosed = { computerOn = false })
