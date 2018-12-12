@@ -20,4 +20,6 @@ fun main(args: Array<String>) {
         computer.step()
         screen.refresh()
     }
+
+    screen.dispose()
 }

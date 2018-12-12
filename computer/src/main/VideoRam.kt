@@ -1,7 +1,7 @@
 class VideoRam : RAM() {
 
     val videoMemory = RAM8K()
-    val keyboardMemory = Register()
+    val keyboardMemory = Register(Short.MIN_VALUE)
 
     private val registers = arrayOf(RAM8K(), RAM8K(), videoMemory, keyboardMemory)
 

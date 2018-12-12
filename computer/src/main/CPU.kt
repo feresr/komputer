@@ -1,6 +1,6 @@
 class CPU(private val pc: PC,
           private val alu: ALU,
-          private val registerA: Register,
+          val registerA: Register,
           private val registerD: Register) : (Short, Short, Boolean) -> Unit {
 
     var currentPc : Short = 0
@@ -15,38 +15,38 @@ class CPU(private val pc: PC,
     // u = unused, a c = computation / control bit, d = destination, j = jump
 
     override fun invoke(inst: Short, inM: Short, reset: Boolean) {
-        val instruction = inst.toBinary()
-        val opCode = instruction[0]
+        val instruction = inst.toBinaryReversed()
+        val opCode = instruction[15]
 
-        var aRegisterOut = registerA(input = inst, load = not(opCode))
-
+        registerA(input = inst, load = not(opCode))
         //outputs
-        val aMout = mux(aRegisterOut, inM, and(opCode, instruction[3]))
-        outM = alu(registerD(), aMout, zx = instruction[4], nx = instruction[5],
-                zy = instruction[6], ny = instruction[7], f = instruction[8],
-                no = instruction[9])
+        val aMout = mux(registerA(), inM, and(opCode, instruction[12]))
+        outM = alu(registerD(), aMout, zx = instruction[11], nx = instruction[10],
+                zy = instruction[9], ny = instruction[8], f = instruction[7],
+                no = instruction[6])
 
-        val loadA = and(opCode, instruction[10]) // the 10 bit of a C instruction tells us if we should save in A
-        aRegisterOut = registerA(input = mux(inst, outM, opCode), load = loadA)
-        val loadD = and(opCode, instruction[11]) // the 11 bit of a C instruction tells us if we should save in D
+
+        currentAddressM = registerA()
+        val loadA = and(opCode, instruction[5]) // the 10 bit of a C instruction tells us if we should save in A
+        registerA(input = outM, load = loadA)
+
+        val loadD = and(opCode, instruction[4]) // the 11 bit zof a C instruction tells us if we should save in D
         registerD(input = outM, load = loadD)
 
-        writeM = and(opCode, instruction[12])
+        writeM = and(opCode, instruction[3])
 
-        val jeq = and(alu.zr, instruction[14])
-        val jlt = and(alu.ng, instruction[13])
+        val jlt = and(alu.ng, instruction[2])
+        val jeq = and(alu.zr, instruction[1])
 
         val zeroOrNeg = or(alu.zr, alu.ng)
         val positive = not(zeroOrNeg)
-        val jgt = and(positive, instruction[15])
+        val jgt = and(positive, instruction[0])
         val jle = or(jeq, jlt)
         val jumpToA = or(jle, jgt)
         val pcLoad = and(opCode, jumpToA)
         val pcInc = not(pcLoad)
 
-        currentPc = pc(aRegisterOut, load = pcLoad, increment = pcInc, reset = reset)
-        currentAddressM = aRegisterOut
-
+        currentPc = pc(registerA(), load = pcLoad, increment = pcInc, reset = reset)
     }
 
     override fun toString(): String {

@@ -35,13 +35,6 @@ class ALUTests {
     }
 
     @Test
-    fun `y + 1?`() {
-        val result = alu(5, 3, true, true, true, false, true, false)
-        assertEquals((4).toShort(), result)
-    }
-
-
-    @Test
     fun `first input`() {
         val result = alu(8, 2, false, false, true, true, false, false)
         assertEquals(8.toShort(), result)

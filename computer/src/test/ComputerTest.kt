@@ -159,4 +159,207 @@ class ComputerTest {
         computer.step()
         assertEquals(5.toShort(), pc())
     }
+
+    @Test
+    fun `D`() {
+        val program = assembleFile(File("src/test/programs/D")).toList().toShortArray()
+
+        val ram = VideoRam()
+        val aRegister = Register()
+        val dRegister = Register()
+        val pc = Register()
+        val computer = Computer(
+                rom = Cartridge(program),
+                cpu = CPU(PC(pc), ALU(), aRegister, dRegister),
+                memory = ram,
+                reset = { false }
+        )
+
+        assertEquals(0.toShort(), dRegister())
+        computer.step()
+        assertEquals(1.toShort(), dRegister())
+        assertEquals(0.toShort(), aRegister())
+        computer.step()
+        assertEquals(2.toShort(), dRegister())
+        assertEquals(0.toShort(), aRegister())
+        computer.step()
+        assertEquals(1.toShort(), dRegister())
+        assertEquals(0.toShort(), aRegister())
+    }
+
+    @Test
+    fun `M`() {
+        val program = assembleFile(File("src/test/programs/M")).toList().toShortArray()
+
+        val ram = VideoRam()
+        val aRegister = Register()
+        val dRegister = Register()
+        val pc = Register()
+        val computer = Computer(
+                rom = Cartridge(program),
+                cpu = CPU(PC(pc), ALU(), aRegister, dRegister),
+                memory = ram,
+                reset = { false }
+        )
+
+        assertEquals(0.toShort(), ram(aRegister()))
+        computer.step()
+        assertEquals(1.toShort(), ram(aRegister()))
+        assertEquals(0.toShort(), aRegister())
+        computer.step()
+        assertEquals(2.toShort(), ram(aRegister()))
+        assertEquals(0.toShort(), aRegister())
+        computer.step()
+        assertEquals(1.toShort(), ram(aRegister()))
+        assertEquals(0.toShort(), aRegister())
+    }
+
+    @Test
+    fun `A`() {
+        val program = assembleFile(File("src/test/programs/A")).toList().toShortArray()
+
+        val ram = VideoRam()
+        val aRegister = Register()
+        val dRegister = Register()
+        val pc = Register()
+        val computer = Computer(
+                rom = Cartridge(program),
+                cpu = CPU(PC(pc), ALU(), aRegister, dRegister),
+                memory = ram,
+                reset = { false }
+        )
+
+        assertEquals(0.toShort(), aRegister())
+        computer.step()
+        assertEquals(1.toShort(), aRegister())
+        assertEquals(0.toShort(), dRegister())
+        computer.step()
+        assertEquals(2.toShort(), aRegister())
+        assertEquals(0.toShort(), dRegister())
+        computer.step()
+        assertEquals(1.toShort(), aRegister())
+        assertEquals(0.toShort(), dRegister())
+    }
+
+
+    @Test
+    fun `AND`() {
+        val program = assembleFile(File("src/test/programs/AND")).toList().toShortArray()
+
+        val ram = VideoRam()
+        val aRegister = Register()
+        val dRegister = Register()
+        val pc = Register()
+        val computer = Computer(
+                rom = Cartridge(program),
+                cpu = CPU(PC(pc), ALU(), aRegister, dRegister),
+                memory = ram,
+                reset = { false }
+        )
+
+        computer.step()
+        computer.step()
+        computer.step()
+        computer.step()
+        assertEquals(4.toShort(), dRegister())
+
+    }
+
+    @Test
+    fun `OR`() {
+        val program = assembleFile(File("src/test/programs/OR")).toList().toShortArray()
+
+        val ram = VideoRam()
+        val aRegister = Register()
+        val dRegister = Register()
+        val pc = Register()
+        val computer = Computer(
+                rom = Cartridge(program),
+                cpu = CPU(PC(pc), ALU(), aRegister, dRegister),
+                memory = ram,
+                reset = { false }
+        )
+
+        computer.step()
+        computer.step()
+        computer.step()
+        computer.step()
+        assertEquals(7.toShort(), dRegister())
+
+    }
+
+    @Test
+    fun `MINUS`() {
+        val program = assembleFile(File("src/test/programs/MINUS")).toList().toShortArray()
+
+        val ram = VideoRam()
+        val aRegister = Register()
+        val dRegister = Register()
+        val pc = Register()
+        val computer = Computer(
+                rom = Cartridge(program),
+                cpu = CPU(PC(pc), ALU(), aRegister, dRegister),
+                memory = ram,
+                reset = { false }
+        )
+
+        computer.step()
+        computer.step()
+        computer.step()
+        computer.step()
+        assertEquals(18.toShort(), ram(aRegister()))
+        computer.step()
+        assertEquals((-12).toShort(), ram(aRegister()))
+
+    }
+
+
+    @Test
+    fun `NOT`() {
+        val program = assembleFile(File("src/test/programs/NOT")).toList().toShortArray()
+
+        val ram = VideoRam()
+        val aRegister = Register()
+        val dRegister = Register()
+        val pc = Register()
+        val computer = Computer(
+                rom = Cartridge(program),
+                cpu = CPU(PC(pc), ALU(), aRegister, dRegister),
+                memory = ram,
+                reset = { false }
+        )
+
+        computer.step()
+        computer.step()
+        assertEquals((-1).toShort(), dRegister())
+        computer.step()
+        assertEquals(0.toShort(), dRegister())
+
+    }
+
+    @Test
+    fun `DEST`() {
+        val program = assembleFile(File("src/test/programs/DEST")).toList().toShortArray()
+
+        val ram = VideoRam()
+        val aRegister = Register()
+        val dRegister = Register()
+        val pc = Register()
+        val computer = Computer(
+                rom = Cartridge(program),
+                cpu = CPU(PC(pc), ALU(), aRegister, dRegister),
+                memory = ram,
+                reset = { false }
+        )
+
+        computer.step()
+        computer.step()
+        assertEquals((10).toShort(), dRegister())
+        assertEquals((10).toShort(), ram(aRegister()))
+        computer.step()
+        assertEquals((11).toShort(), dRegister())
+        assertEquals((11).toShort(), aRegister())
+        assertEquals((11).toShort(), ram(10.toShort()))
+
+    }
 }

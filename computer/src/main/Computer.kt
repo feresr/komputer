@@ -13,11 +13,10 @@ class Computer(private val rom: ROM,
         //println("pc: ${cpu.currentPc}")
         cpu(
                 inst = rom(cpu.currentPc),
-                inM = memory(cpu.currentAddressM),
+                inM = memory(cpu.registerA()),
                 reset = reset()
         )
         memory(input = cpu.outM, load = cpu.writeM, address = cpu.currentAddressM)
-        println("CPU: $cpu pc:${cpu.currentPc}") // - memory: $memory \n")
-        //Thread.sleep(600)
+        //println("CPU: $cpu pc:${cpu.currentPc}") // - memory: $memory \n")
     }
 }

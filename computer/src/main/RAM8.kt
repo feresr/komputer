@@ -10,6 +10,6 @@ class RAM8 : RAM() {
     }
 
     companion object {
-        const val NUM_REGISTERS = 8
+        const val NUM_REGISTERS = 8 * Register.NUM_REGISTERS
     }
 }

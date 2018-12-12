@@ -23,27 +23,27 @@ class Screen(private val memory: ROM, fps: Int = 60, val onWindowClosed : ()-> U
             override fun windowIconified(e: WindowEvent?) {}
             override fun windowClosing(e: WindowEvent?) {
                 onWindowClosed()
-                graphics?.dispose()
-                dispose()
             }
         })
         setSize(WIDTH * SCALE + insets.left + insets.right, HEIGHT * SCALE + insets.top + insets.bottom)
+
         background = Color.BLACK
     }
 
     fun refresh() {
         if ((System.currentTimeMillis() - time) < step) return
+        if (bufferStrategy == null) createBufferStrategy(2)
 
         px = 0
         py = 0
-        val gg = graphics as Graphics2D
+        val gg = bufferStrategy.drawGraphics //as Graphics2D
 
         (0 until PIXELS).forEach { i ->
             memory(i.toShort())
-                    .toBinary()
+                    .toBinaryReversed()
                     //.map { Math.random() > .5 }
                     .forEach { bit ->
-                        gg.paint = if (bit) Color.WHITE else Color.BLACK
+                        gg.color = if (bit) Color.WHITE else Color.BLACK
                         gg.fillRect(px * SCALE + insets.left, py * SCALE + insets.top, SCALE, SCALE)
                         px++
                         if (px % WIDTH == 0) {
@@ -53,7 +53,9 @@ class Screen(private val memory: ROM, fps: Int = 60, val onWindowClosed : ()-> U
                     }
 
         }
+
         gg.dispose()
+        bufferStrategy.show()
         time = System.currentTimeMillis()
     }
 
@@ -61,6 +63,6 @@ class Screen(private val memory: ROM, fps: Int = 60, val onWindowClosed : ()-> U
         const val HEIGHT = 256
         const val WIDTH = 512
         const val PIXELS = WIDTH * HEIGHT / Short.SIZE_BITS
-        const val SCALE: Int = 3
+        const val SCALE: Int = 2
     }
 }

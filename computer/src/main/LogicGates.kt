@@ -25,11 +25,13 @@ fun BooleanArray.toShort(): Short {
 }
 
 
-fun Short.toBinary(): BooleanArray {
+fun Short.toBinary(): BooleanArray = this.toBinaryReversed().reversedArray()
+
+fun Short.toBinaryReversed(): BooleanArray {
     var current = if (this >= 0) this else (this + 1).toShort()
     val positive = BooleanArray(Short.SIZE_BITS) {
         (abs(current % 2) == 1).also { current = current.div(2).toShort() }
-    }.reversedArray()
+    }
 
     return if (this >= 0) {
         positive

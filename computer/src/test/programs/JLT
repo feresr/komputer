@@ -1,0 +1,6 @@
+@0
+D=A-1
+D=D-1
+@4
+D=D+1;JLT       //0 EQUAL 0, PC SHOULD STAY IN 0 FOREVER
+@100
