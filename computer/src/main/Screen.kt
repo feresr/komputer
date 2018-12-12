@@ -37,14 +37,14 @@ class Screen(private val memory: ROM, fps: Int = 60, val onWindowClosed : ()-> U
         px = 0
         py = 0
         val gg = bufferStrategy.drawGraphics //as Graphics2D
-
+        gg.color = Color.WHITE
+        gg.clearRect(insets.left, insets.top, WIDTH * SCALE + insets.left + insets.right, HEIGHT * SCALE + insets.top + insets.bottom)
         (0 until PIXELS).forEach { i ->
             memory(i.toShort())
                     .toBinaryReversed()
                     //.map { Math.random() > .5 }
                     .forEach { bit ->
-                        gg.color = if (bit) Color.WHITE else Color.BLACK
-                        gg.fillRect(px * SCALE + insets.left, py * SCALE + insets.top, SCALE, SCALE)
+                        if (bit) gg.fillRect(px * SCALE + insets.left, py * SCALE + insets.top, SCALE, SCALE)
                         px++
                         if (px % WIDTH == 0) {
                             px = 0

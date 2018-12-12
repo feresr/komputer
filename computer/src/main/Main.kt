@@ -10,6 +10,8 @@ fun main(args: Array<String>) {
 
     val ram = VideoRam()
     val screen = Screen(ram.videoMemory, onWindowClosed = { computerOn = false })
+    val keyboard = Keyboard(ram.keyboardMemory)
+    screen.addKeyListener(keyboard)
     val computer = Computer(
             rom = Cartridge(program),
             cpu = CPU(PC(Register()), ALU(), registerA = Register(), registerD = Register()), memory = ram,

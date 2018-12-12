@@ -362,4 +362,25 @@ class ComputerTest {
         assertEquals((11).toShort(), ram(10.toShort()))
 
     }
+
+    @Test
+    fun `KEYBOARD`() {
+        val program = assembleFile(File("src/test/programs/KEYBOARD")).toList().toShortArray()
+
+        val ram = VideoRam()
+        val aRegister = Register()
+        val dRegister = Register()
+        val pc = Register()
+        val computer = Computer(
+                rom = Cartridge(program),
+                cpu = CPU(PC(pc), ALU(), aRegister, dRegister),
+                memory = ram,
+                reset = { false }
+        )
+
+        computer.step()
+        computer.step()
+        assertEquals((1).toShort(), ram.keyboardMemory())
+
+    }
 }
