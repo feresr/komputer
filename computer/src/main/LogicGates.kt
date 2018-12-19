@@ -79,11 +79,17 @@ fun add(x: Boolean, y: Boolean, z: Boolean): Pair<Boolean, Boolean> {
  * Multi-bit variants
  */
 fun add(x: Short, y: Short): Short = (x + y).toShort()
-/*fun add(x: Short, y: Short): Short {
+/*
+
+Alternative "add" implementation, this method does not rely on the language provided plus operator. This is here with
+educational purposes as proof that addition can be implemented from existing logic gates. However using this method
+turns out to be incredibly inefficient in practice, so an alternative is provided.
+
+fun add(x: Short, y: Short): Short {
     val xb = x.toBinary()
     val yb = y.toBinary()
 
-    val result = 0.toShort().toBinary()
+    val result = BooleanArray(16)
     val (carry, number) = add(xb[Short.SIZE_BITS - 1], yb[Short.SIZE_BITS - 1])
     result[Short.SIZE_BITS - 1] = number
 
@@ -91,12 +97,13 @@ fun add(x: Short, y: Short): Short = (x + y).toShort()
     (Short.SIZE_BITS - 2 downTo 0).forEach {
         val (cr, n) = add(xb[it], yb[it], c)
         c = cr
-
         result[it] = n
     }
 
-    return result
-}*/
+    return result.toShort()
+}
+
+*/
 
 fun increment(x: Short): Short {
     return x.inc()
@@ -104,9 +111,6 @@ fun increment(x: Short): Short {
 
 fun substract(x: Short, y: Short): Short {
     return increment(add(x, not(y)))
-    //val not = not(y)
-    //return 0
-    //return increment(add(x, not))
 }
 
 fun zero(x: Short): Boolean = x == 0.toShort()
