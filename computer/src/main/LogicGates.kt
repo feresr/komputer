@@ -69,24 +69,33 @@ fun mux(x: Short, y: Short, sel: Boolean) = or(and(sel.toShort(), y), and(not(se
  */
 
 //half hadder
-fun add(x: Boolean, y: Boolean): Pair<Boolean, Boolean> = Pair(and(x, y), xor(x, y))
+fun add(x: Boolean, y: Boolean): Boolean = xor(x, y)
+fun carry(x: Boolean, y: Boolean): Boolean = and(x, y)
 
 //full adder
-fun add(x: Boolean, y: Boolean, z: Boolean): Pair<Boolean, Boolean> {
-    val (a, b) = add(x, y)
-    val (c, d) = add(b, z)
-    return Pair(or(c, a), d)
+fun add(x: Boolean, y: Boolean, z: Boolean): Boolean {
+    val b = add(x, y)
+    return add(b, z)
+}
+
+fun carry(x: Boolean, y: Boolean, z: Boolean): Boolean {
+    val a = carry(x, y)
+    val b = add(x, y)
+    val c = carry(b, z)
+    return or(c, a)
 }
 
 fun add(x: Short, y: Short): Short {
 
     val result = BooleanArray(16)
-    val (carry, number) = add(x[0], y[0])
+    val number = add(x[0], y[0])
+    val carry = carry(x[0], y[0])
     result[Short.SIZE_BITS - 1] = number
 
     var c = carry
     (1 until  Short.SIZE_BITS).forEach {
-        val (cr, n) = add(x[it], y[it], c)
+        val n = add(x[it], y[it], c)
+        val cr = carry(x[it], y[it], c)
         c = cr
         result[Short.SIZE_BITS - 1 - it] = n
     }
