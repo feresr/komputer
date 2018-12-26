@@ -25,8 +25,7 @@ fun BooleanArray.toShort(): Short {
 }
 
 
-fun Short.toBinary(): BooleanArray = this.toBinaryReversed().reversedArray()
-
+// Overcomplicated way I came up to read bites out of Shorts in two's complement. Using bite-wise operations now.
 fun Short.toBinaryReversed(): BooleanArray {
     var current = if (this >= 0) this else (this + 1).toShort()
     val positive = BooleanArray(Short.SIZE_BITS) {
@@ -38,6 +37,10 @@ fun Short.toBinaryReversed(): BooleanArray {
     } else {
         positive.map { !it }.toBooleanArray()
     }
+}
+
+operator fun Short.get(position : Int) : Boolean {
+    return (this.toInt() shr position) and 1 == 1
 }
 
 /**

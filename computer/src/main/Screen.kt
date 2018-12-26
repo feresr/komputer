@@ -40,9 +40,9 @@ class Screen(private val memory: ROM, fps: Int = 60, val onWindowClosed : ()-> U
         gg.color = Color.WHITE
         gg.clearRect(insets.left, insets.top, WIDTH * SCALE + insets.left + insets.right, HEIGHT * SCALE + insets.top + insets.bottom)
         (0 until PIXELS).forEach { i ->
-            memory(i.toShort())
-                    .toBinaryReversed()
-                    //.map { Math.random() > .5 }
+            val value = memory(i.toShort())
+            //16 bites
+            (0 until 16).map { (value.toInt() shr it) and 1 == 1 }
                     .forEach { bit ->
                         if (bit) gg.fillRect(px * SCALE + insets.left, py * SCALE + insets.top, SCALE, SCALE)
                         px++
@@ -51,7 +51,6 @@ class Screen(private val memory: ROM, fps: Int = 60, val onWindowClosed : ()-> U
                             py++
                         }
                     }
-
         }
 
         gg.dispose()

@@ -1,3 +1,4 @@
+
 class CPU(private val pc: PC,
           private val alu: ALU,
           val registerA: Register,
@@ -15,32 +16,31 @@ class CPU(private val pc: PC,
     // u = unused, a c = computation / control bit, d = destination, j = jump
 
     override fun invoke(inst: Short, inM: Short, reset: Boolean) {
-        val instruction = inst.toBinaryReversed()
-        val opCode = instruction[15]
+        val opCode = inst[15]
 
         registerA(input = inst, load = not(opCode))
         //outputs
-        val aMout = mux(registerA(), inM, and(opCode, instruction[12]))
-        outM = alu(registerD(), aMout, zx = instruction[11], nx = instruction[10],
-                zy = instruction[9], ny = instruction[8], f = instruction[7],
-                no = instruction[6])
+        val aMout = mux(registerA(), inM, and(opCode, inst[12]))
+        outM = alu(registerD(), aMout, zx = inst[11], nx = inst[10],
+                zy = inst[9], ny = inst[8], f = inst[7],
+                no = inst[6])
 
 
         currentAddressM = registerA()
-        val loadA = and(opCode, instruction[5]) // the 10 bit of a C instruction tells us if we should save in A
+        val loadA = and(opCode, inst[5]) // the 10 bit of a C instruction tells us if we should save in A
         registerA(input = outM, load = loadA)
 
-        val loadD = and(opCode, instruction[4]) // the 11 bit zof a C instruction tells us if we should save in D
+        val loadD = and(opCode, inst[4]) // the 11 bit zof a C instruction tells us if we should save in D
         registerD(input = outM, load = loadD)
 
-        writeM = and(opCode, instruction[3])
+        writeM = and(opCode, inst[3])
 
-        val jlt = and(alu.ng, instruction[2])
-        val jeq = and(alu.zr, instruction[1])
+        val jlt = and(alu.ng, inst[2])
+        val jeq = and(alu.zr, inst[1])
 
         val zeroOrNeg = or(alu.zr, alu.ng)
         val positive = not(zeroOrNeg)
-        val jgt = and(positive, instruction[0])
+        val jgt = and(positive, inst[0])
         val jle = or(jeq, jlt)
         val jumpToA = or(jle, jgt)
         val pcLoad = and(opCode, jumpToA)
