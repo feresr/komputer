@@ -11,7 +11,7 @@
       <option name="taskNames">
         <list>
           <option value="run" />
-          <option value="--args=&quot;../program&quot;" />
+          <option value="--args=&quot;../program.asm&quot;" />
         </list>
       </option>
       <option name="vmOptions" value="" />

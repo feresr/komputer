@@ -73,24 +73,10 @@ class LogicGatesTests {
     }
 
     @Test
-    fun shortToBinary() {
-        assertArrayEquals(BooleanArray(16) { it == 15 }, (1).toShort().toBinary())
-        assertArrayEquals(BooleanArray(16) { false }, (0).toShort().toBinary())
-        assertArrayEquals(BooleanArray(16) { true }, (-1).toShort().toBinary())
-    }
-
-    @Test
     fun binaryToShort() {
         assertEquals(1.toShort(), BooleanArray(16) { it == 15 }.toShort())
         assertEquals(0.toShort(), BooleanArray(16) { false }.toShort())
         assertEquals((-1).toShort(), BooleanArray(16) { true }.toShort())
-    }
-
-    @Test
-    fun shortToBinaryToShort() {
-        listOf(105, 99, 21, 12, 1, 0, -1, -12, -21, -99, -105)
-                .map { it.toShort() }
-                .forEach { assertEquals(it, it.toBinary().toShort()) }
     }
 
     @Test

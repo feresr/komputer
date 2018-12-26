@@ -71,42 +71,29 @@ fun mux(x: Short, y: Short, sel: Boolean) = or(and(sel.toShort(), y), and(not(se
 //half hadder
 fun add(x: Boolean, y: Boolean): Pair<Boolean, Boolean> = Pair(and(x, y), xor(x, y))
 
-//full added
+//full adder
 fun add(x: Boolean, y: Boolean, z: Boolean): Pair<Boolean, Boolean> {
     val (a, b) = add(x, y)
     val (c, d) = add(b, z)
     return Pair(or(c, a), d)
 }
 
-/**
- * Multi-bit variants
- */
-fun add(x: Short, y: Short): Short = (x + y).toShort()
-/*
-
-Alternative "add" implementation, this method does not rely on the language provided plus operator. This is here with
-educational purposes as proof that addition can be implemented from existing logic gates. However using this method
-turns out to be incredibly inefficient in practice, so an alternative is provided.
-
 fun add(x: Short, y: Short): Short {
-    val xb = x.toBinary()
-    val yb = y.toBinary()
 
     val result = BooleanArray(16)
-    val (carry, number) = add(xb[Short.SIZE_BITS - 1], yb[Short.SIZE_BITS - 1])
+    val (carry, number) = add(x[0], y[0])
     result[Short.SIZE_BITS - 1] = number
 
     var c = carry
-    (Short.SIZE_BITS - 2 downTo 0).forEach {
-        val (cr, n) = add(xb[it], yb[it], c)
+    (1 until  Short.SIZE_BITS).forEach {
+        val (cr, n) = add(x[it], y[it], c)
         c = cr
-        result[it] = n
+        result[Short.SIZE_BITS - 1 - it] = n
     }
 
     return result.toShort()
 }
 
-*/
 
 fun increment(x: Short): Short {
     return x.inc()
