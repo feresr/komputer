@@ -2,10 +2,12 @@ import java.io.File
 
 fun main(args: Array<String>) {
     if (args.isEmpty()) {
-        print("Please specify the filename to assemble")
+        print("Please specify a .vm file to translate")
         return
     }
-    val writer = File(args[0] + ".cmp").writer()
+
+    val file = File(args[0])
+    val writer = File("${file.parent}/${file.nameWithoutExtension}.asm").writer()
     translateFile(File(args[0])).forEach { writer.appendln(it.toString()); }
     writer.flush()
 }

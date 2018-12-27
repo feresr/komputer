@@ -1,13 +1,13 @@
 import java.io.File
 
-
-
 fun main(args: Array<String>) {
     if (args.isEmpty()) {
-        print("Please specify the filename to assemble")
+        print("Please specify a .asm assembly file to assemble")
         return
     }
-    val writer = File(args[0] + ".cmp").writer()
-    assembleFile(File(args[0])).forEach { writer.appendln(it.toString()); }
+
+    val file = File(args[0])
+    val writer = File("${file.parent}/${file.nameWithoutExtension}.cmp").writer()
+    assembleFile(file).forEach { writer.appendln(it.toString()); }
     writer.flush()
 }

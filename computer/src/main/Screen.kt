@@ -42,7 +42,7 @@ class Screen(private val memory: ROM, fps: Int = 60, val onWindowClosed : ()-> U
         (0 until PIXELS).forEach { i ->
             val value = memory(i.toShort())
             //16 bites
-            (0 until 16).map { (value.toInt() shr it) and 1 == 1 }
+            (0 until Short.SIZE_BITS).map { (value.toInt() shr it) and 1 == 1 }
                     .forEach { bit ->
                         if (bit) gg.fillRect(px * SCALE + insets.left, py * SCALE + insets.top, SCALE, SCALE)
                         px++

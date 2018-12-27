@@ -12,6 +12,8 @@ fun nand(x: Short, y: Short): Short = (x and y).inv()
 
 /**
  * Utilities
+ * -1 in binary = 1111111111111111
+ * 1 in binary = 00000000000000001
  */
 fun Boolean.toShort(): Short = if (this) -1 else 0
 
