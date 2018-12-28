@@ -1,78 +1,68 @@
-// push CONSTANT 111
-@111
+// push CONSTANT 1
+@1
 D=A
 @SP
 A=M
 M=D
 @SP
 M=M+1
-// push CONSTANT 333
-@333
+// push CONSTANT 1
+@1
 D=A
 @SP
 A=M
 M=D
 @SP
 M=M+1
-// push CONSTANT 888
-@888
-D=A
-@SP
-A=M
-M=D
-@SP
-M=M+1
-// pop STATIC 8
-@SP
-AM=M-1
-D=M
-@program.8
-M=D
-// pop STATIC 3
-@SP
-AM=M-1
-D=M
-@program.3
-M=D
-// pop STATIC 1
-@SP
-AM=M-1
-D=M
-@program.1
-M=D
-// push STATIC 3
-@program.3
-D=M
-@SP
-A=M
-M=D
-@SP
-M=M+1
-// push STATIC 1
-@program.1
-D=M
-@SP
-A=M
-M=D
-@SP
-M=M+1
-// sub
+// eq
 @SP
 AM=M-1
 D=M
 A=A-1
-M=M-D
-// push STATIC 8
-@program.8
-D=M
+D=M-D
+@TRUE.1
+D;JEQ
+@SP
+A=M-1
+M=0
+@END.1
+0;JMP
+(TRUE.1)
+@SP
+A=M-1
+M=-1
+(END.1)
+// push CONSTANT 2
+@2
+D=A
 @SP
 A=M
 M=D
 @SP
 M=M+1
-// add
+// push CONSTANT 6
+@6
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+// eq
 @SP
 AM=M-1
 D=M
 A=A-1
-M=M+D
+D=M-D
+@TRUE.2
+D;JEQ
+@SP
+A=M-1
+M=0
+@END.2
+0;JMP
+(TRUE.2)
+@SP
+A=M-1
+M=-1
+(END.2)

@@ -3,7 +3,7 @@ import java.util.stream.Stream
 
 private const val COMMENT_START = "//"
 
-enum class CommandType { ADD, SUB, PUSH, POP, LABEL, GOTO, IF, FUNCTION, RETURN, CALL }
+enum class CommandType { ADD, SUB, NEG, AND, NOT, EQ, LT, GT, OR, PUSH, POP, LABEL, GOTO, IF, FUNCTION, RETURN, CALL }
 enum class Segment { LCL, ARG, THIS, THAT, CONSTANT, STATIC, POINTER, TEMP }
 
 private fun commandType(command: String): CommandType {
@@ -12,6 +12,13 @@ private fun commandType(command: String): CommandType {
         "pop" -> CommandType.POP
         "add" -> CommandType.ADD
         "sub" -> CommandType.SUB
+        "neg" -> CommandType.NEG
+        "eq" -> CommandType.EQ
+        "lt" -> CommandType.LT
+        "gt" -> CommandType.GT
+        "or" -> CommandType.OR
+        "and" -> CommandType.AND
+        "not" -> CommandType.NOT
         else -> throw IllegalStateException("Unknown command type $command")
     }
 }
@@ -209,6 +216,13 @@ fun translateFile(file: File): Stream<String> {
                     CommandType.POP -> pop(command[1].segment(), command[2].toShort())
                     CommandType.ADD -> add()
                     CommandType.SUB -> sub()
+                    CommandType.NEG -> neg()
+                    CommandType.EQ -> eq()
+                    CommandType.GT -> gt()
+                    CommandType.LT -> sub()
+                    CommandType.AND -> sub()
+                    CommandType.OR -> sub()
+                    CommandType.NOT -> sub()
                     CommandType.LABEL -> pop(command[1].segment(), command[2].toShort())
                     CommandType.GOTO -> pop(command[1].segment(), command[2].toShort())
                     CommandType.IF -> pop(command[1].segment(), command[2].toShort())
@@ -217,4 +231,38 @@ fun translateFile(file: File): Stream<String> {
                     CommandType.CALL -> pop(command[1].segment(), command[2].toShort())
                 }
             }
+}
+
+private var jumpFlag = 0
+
+fun eq(): Stream<String> {
+    jumpFlag++
+    return listOf(
+            "// eq",
+            "@SP",
+            "AM=M-1",
+            "D=M",
+            "A=A-1",
+            "D=M-D",
+            "@TRUE.$jumpFlag",
+            "D;JEQ",
+            "@SP",
+            "A=M-1",
+            "M=0",
+            "@END.$jumpFlag",
+            "0;JMP",
+            "(TRUE.$jumpFlag)",
+            "@SP",
+            "A=M-1",
+            "M=-1",
+            "(END.$jumpFlag)"
+    ).stream()
+}
+
+fun neg(): Stream<String> {
+    TODO()
+}
+
+fun gt(): Stream<String> {
+    TODO()
 }
