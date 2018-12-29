@@ -4,9 +4,6 @@
 // File name: projects/07/MemoryAccess/StaticTest/StaticTest.vm
 
 // Executes pop and push commands using the static segment.
-push constant 1
-push constant 1
-eq
-push constant 2
-push constant 6
-eq
+push constant 6 //110
+push constant 5 //101
+and

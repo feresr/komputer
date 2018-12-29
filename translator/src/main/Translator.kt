@@ -219,10 +219,10 @@ fun translateFile(file: File): Stream<String> {
                     CommandType.NEG -> neg()
                     CommandType.EQ -> eq()
                     CommandType.GT -> gt()
-                    CommandType.LT -> sub()
-                    CommandType.AND -> sub()
-                    CommandType.OR -> sub()
-                    CommandType.NOT -> sub()
+                    CommandType.LT -> lt()
+                    CommandType.AND -> and()
+                    CommandType.OR -> or()
+                    CommandType.NOT -> not()
                     CommandType.LABEL -> pop(command[1].segment(), command[2].toShort())
                     CommandType.GOTO -> pop(command[1].segment(), command[2].toShort())
                     CommandType.IF -> pop(command[1].segment(), command[2].toShort())
@@ -231,6 +231,42 @@ fun translateFile(file: File): Stream<String> {
                     CommandType.CALL -> pop(command[1].segment(), command[2].toShort())
                 }
             }
+}
+
+fun not(): Stream<String> {
+    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+}
+
+fun neg(): Stream<String> {
+    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+}
+
+fun or(): Stream<String> {
+    return listOf(
+            "// and",
+            "@SP",
+            "AM=M-1",
+            "D=M",
+            "A=A-1",
+            "D=M|D",
+            "@SP",
+            "A=M-1",
+            "M=D"
+    ).stream()
+}
+
+fun and(): Stream<String> {
+    return listOf(
+            "// and",
+            "@SP",
+            "AM=M-1",
+            "D=M",
+            "A=A-1",
+            "D=M&D",
+            "@SP",
+            "A=M-1",
+            "M=D"
+    ).stream()
 }
 
 private var jumpFlag = 0
@@ -259,10 +295,53 @@ fun eq(): Stream<String> {
     ).stream()
 }
 
-fun neg(): Stream<String> {
-    TODO()
-}
+
 
 fun gt(): Stream<String> {
-    TODO()
+    jumpFlag++
+    return listOf(
+            "// eq",
+            "@SP",
+            "AM=M-1",
+            "D=M",
+            "A=A-1",
+            "D=M-D",
+            "@TRUE.$jumpFlag",
+            "D;JGT",
+            "@SP",
+            "A=M-1",
+            "M=0",
+            "@END.$jumpFlag",
+            "0;JMP",
+            "(TRUE.$jumpFlag)",
+            "@SP",
+            "A=M-1",
+            "M=-1",
+            "(END.$jumpFlag)"
+    ).stream()
 }
+
+fun lt(): Stream<String> {
+    jumpFlag++
+    return listOf(
+            "// eq",
+            "@SP",
+            "AM=M-1",
+            "D=M",
+            "A=A-1",
+            "D=M-D",
+            "@TRUE.$jumpFlag",
+            "D;JLT",
+            "@SP",
+            "A=M-1",
+            "M=0",
+            "@END.$jumpFlag",
+            "0;JMP",
+            "(TRUE.$jumpFlag)",
+            "@SP",
+            "A=M-1",
+            "M=-1",
+            "(END.$jumpFlag)"
+    ).stream()
+}
+
