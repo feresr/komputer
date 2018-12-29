@@ -234,16 +234,38 @@ fun translateFile(file: File): Stream<String> {
 }
 
 fun not(): Stream<String> {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    return listOf(
+            "// NOT",
+            "@SP",
+            "AM=M-1",
+            "D=!M",
+            "@SP",
+            "A=M",
+            "M=D",
+            "@SP",
+            "M=M+1"
+    ).stream()
 }
 
 fun neg(): Stream<String> {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    return listOf(
+            "// neg",
+            "@SP",
+            "AM=M-1",
+            "D=M",
+            "@0",
+            "D=A-D",
+            "@SP",
+            "A=M",
+            "M=D",
+            "@SP",
+            "M=M+1"
+    ).stream()
 }
 
 fun or(): Stream<String> {
     return listOf(
-            "// and",
+            "// or",
             "@SP",
             "AM=M-1",
             "D=M",
