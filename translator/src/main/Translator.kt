@@ -19,6 +19,8 @@ private fun commandType(command: String): CommandType {
         "or" -> CommandType.OR
         "and" -> CommandType.AND
         "not" -> CommandType.NOT
+        "label" -> CommandType.LABEL
+        "if-goto" -> CommandType.IF
         else -> throw IllegalStateException("Unknown command type $command")
     }
 }
@@ -223,15 +225,40 @@ fun translateFile(file: File): Stream<String> {
                     CommandType.AND -> and()
                     CommandType.OR -> or()
                     CommandType.NOT -> not()
-                    CommandType.LABEL -> pop(command[1].segment(), command[2].toShort())
-                    CommandType.GOTO -> pop(command[1].segment(), command[2].toShort())
-                    CommandType.IF -> pop(command[1].segment(), command[2].toShort())
+                    CommandType.LABEL -> label(command[1])
+                    CommandType.GOTO -> goto(command[1])
+                    CommandType.IF -> ifGoto(command[1])
                     CommandType.FUNCTION -> pop(command[1].segment(), command[2].toShort())
                     CommandType.RETURN -> pop(command[1].segment(), command[2].toShort())
                     CommandType.CALL -> pop(command[1].segment(), command[2].toShort())
                 }
             }
 }
+
+fun ifGoto(label: String): Stream<String> {
+    jumpFlag++
+    return listOf(
+            "//if goto",
+            "@SP",
+            "AM=M-1",
+            "D=M",
+            "@CONTINUE.$jumpFlag",
+            "D;JEQ",
+            "@$label",
+            "0;JMP",
+            "(CONTINUE.$jumpFlag)"
+    ).stream()
+}
+
+fun goto(label: String): Stream<String> {
+    return listOf(
+            "// goto",
+            "@$label",
+            "0;JMP"
+    ).stream()
+}
+
+fun label(label: String): Stream<String> = listOf("($label)").stream()
 
 fun not(): Stream<String> {
     return listOf(

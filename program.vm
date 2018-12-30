@@ -1,45 +1,22 @@
 // This file is part of www.nand2tetris.org
 // and the book "The Elements of Computing Systems"
 // by Nisan and Schocken, MIT Press.
-// File name: projects/07/StackArithmetic/StackTest/StackTest.vm
+// File name: projects/08/ProgramFlow/BasicLoop/BasicLoop.vm
 
-// Executes a sequence of arithmetic and logical operations
-// on the stack. 
-push constant 17
-push constant 17
-eq
-push constant 17
-push constant 16
-eq
-push constant 16
-push constant 17
-eq
-push constant 892
-push constant 891
-lt
-push constant 891
-push constant 892
-lt
-push constant 891
-push constant 891
-lt
-push constant 32767
-push constant 32766
-gt
-push constant 32766
-push constant 32767
-gt
-push constant 32766
-push constant 32766
-gt
-push constant 57
-push constant 31
-push constant 53
+// Computes the sum 1 + 2 + ... + argument[0] and pushes the
+// result onto the stack. Argument[0] is initialized by the test
+// script before this code starts running.
+push constant 0
+pop local 0         // initializes sum = 0
+label LOOP_START
+push argument 0
+push local 0
 add
-push constant 112
+pop local 0         // sum = sum + counter
+push argument 0
+push constant 1
 sub
-neg
-and
-push constant 82
-or
-not
+pop argument 0      // counter--
+push argument 0
+if-goto LOOP_START  // If counter > 0, goto LOOP_START
+push local 0
