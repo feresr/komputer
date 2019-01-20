@@ -41,7 +41,7 @@ fun Short.toBinaryReversed(): BooleanArray {
     }
 }
 
-operator fun Short.get(position : Int) : Boolean {
+operator fun Short.get(position: Int): Boolean {
     return (this.toInt() shr position) and 1 == 1
 }
 
@@ -70,8 +70,9 @@ fun mux(x: Short, y: Short, sel: Boolean) = or(and(sel.toShort(), y), and(not(se
  * Add Operations
  */
 
-//half hadder
+//half adder
 fun add(x: Boolean, y: Boolean): Boolean = xor(x, y)
+
 fun carry(x: Boolean, y: Boolean): Boolean = and(x, y)
 
 //full adder
@@ -95,7 +96,7 @@ fun add(x: Short, y: Short): Short {
     result[Short.SIZE_BITS - 1] = number
 
     var c = carry
-    (1 until  Short.SIZE_BITS).forEach {
+    (1 until Short.SIZE_BITS).forEach {
         val n = add(x[it], y[it], c)
         val cr = carry(x[it], y[it], c)
         c = cr

@@ -1,5 +1,4 @@
 import junit.framework.TestCase.*
-import org.junit.Assert.assertArrayEquals
 import org.junit.Test
 
 class LogicGatesTests {
@@ -44,19 +43,21 @@ class LogicGatesTests {
 
     @Test
     fun halfAdder() {
-        assertTrue(add(true, true) == Pair(true, false))
-        assertTrue(add(true, false) == Pair(false, true))
-        assertTrue(add(false, true) == Pair(false, true))
-        assertTrue(add(false, false) == Pair(false, false))
+        assertTrue(!add(true, true))
+        assertTrue(add(true, false))
+        assertTrue(add(false, true))
+        assertTrue(!add(false, false))
     }
+
 
     @Test
     fun fullAdder() {
-        assertTrue(add(true, true, true) == Pair(true, true))
-        assertTrue(add(true, true, false) == Pair(true, false))
-        assertTrue(add(true, false, false) == Pair(false, true))
-        assertTrue(add(false, false, false) == Pair(false, false))
+        assertTrue(add(true, true, true))
+        assertTrue(!add(true, true, false))
+        assertTrue(add(true, false, false))
+        assertTrue(!add(false, false, false))
     }
+
 
     @Test
     fun add16() {

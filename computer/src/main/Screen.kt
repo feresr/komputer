@@ -1,9 +1,10 @@
-import java.awt.*
+import java.awt.Color
+import java.awt.Frame
 import java.awt.event.WindowEvent
 import java.awt.event.WindowListener
 import java.util.concurrent.TimeUnit
 
-class Screen(private val memory: ROM, fps: Int = 60, val onWindowClosed : ()-> Unit) : Frame("Monitor") {
+class Screen(private val memory: ROM, fps: Int = 60, val onWindowClosed: () -> Unit) : Frame("Monitor") {
 
     private var px = 0
     private var py = 0
@@ -27,7 +28,8 @@ class Screen(private val memory: ROM, fps: Int = 60, val onWindowClosed : ()-> U
         })
         setSize(WIDTH * SCALE + insets.left + insets.right, HEIGHT * SCALE + insets.top + insets.bottom)
 
-        background = Color.BLACK
+        //TODO: does not work on mac os, find out why
+        background = Color.white
     }
 
     fun refresh() {
@@ -37,7 +39,7 @@ class Screen(private val memory: ROM, fps: Int = 60, val onWindowClosed : ()-> U
         px = 0
         py = 0
         val gg = bufferStrategy.drawGraphics //as Graphics2D
-        gg.color = Color.WHITE
+        gg.color = Color.BLACK
         gg.clearRect(insets.left, insets.top, WIDTH * SCALE + insets.left + insets.right, HEIGHT * SCALE + insets.top + insets.bottom)
         (0 until PIXELS).forEach { i ->
             val value = memory(i.toShort())

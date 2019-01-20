@@ -1,10 +1,8 @@
-
 class ALU : (Short, Short, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean) -> Short {
 
     //output
     var zr: Boolean = false
     var ng: Boolean = false
-    var output: Short = 0
 
     override fun invoke(x: Short,
                         y: Short,
@@ -25,7 +23,6 @@ class ALU : (Short, Short, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean)
         zr = zero(result)
         ng = negative(result)
 
-        output = result
         return result
     }
 
