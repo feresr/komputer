@@ -3,7 +3,8 @@ class RAM8K : RAM() {
     private val registers = arrayOf(RAM4K(), RAM4K())
 
     override fun invoke(input: Short, load: Boolean, address: Short): Short {
-        return registers[address / RAM4K.NUM_CHIPS](input, load, (address % RAM4K.NUM_CHIPS).toShort())
+        val register = registers[address / RAM4K.NUM_CHIPS]
+        return register(input, load, (address % RAM4K.NUM_CHIPS).toShort())
     }
 
     override fun toString(): String {
